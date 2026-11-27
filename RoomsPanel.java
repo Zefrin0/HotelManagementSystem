@@ -31,14 +31,17 @@ public class RoomsPanel extends VBox {
                 Ui.message(this, "Room number already exists.");
                 return;
             }
-            var type = Ui.input(this, "Room type (Single, Double, Deluxe, Suite):");
+            var type = Ui.input(this, "Room type (Standard, Deluxe, Suite):");
             if (type.isEmpty() || type.get().trim().isEmpty()) return;
             var rateText = Ui.input(this, "Room rate:");
             if (rateText.isEmpty()) return;
             double rate = Double.parseDouble(rateText.get().trim());
             if (!Double.isFinite(rate) || rate < 0) throw new NumberFormatException();
 
-            HotelData.rooms.add(new HotelData.Room(number, type.get().trim(), rate, "Available"));
+            if (!HotelData.addRoom(number, type.get().trim(), rate)) {
+                Ui.message(this, "Could not save the room to the database.");
+                return;
+            }
             main.refreshAll();
             Ui.message(this, "Room added successfully.");
         } catch (NumberFormatException ex) {
@@ -57,7 +60,10 @@ public class RoomsPanel extends VBox {
         try {
             double rate = Double.parseDouble(value.get().trim());
             if (!Double.isFinite(rate) || rate < 0) throw new NumberFormatException();
-            room.rate = rate;
+            if (!HotelData.updateRoomRate(room.number, rate)) {
+                Ui.message(this, "Could not save the new rate to the database.");
+                return;
+            }
             main.refreshAll();
             Ui.message(this, "Room rate updated.");
         } catch (NumberFormatException ex) {

@@ -44,12 +44,3 @@ The UI regression tests use a headless JavaFX runtime, so a desktop display is
 not required. Normal application runs use the native desktop runtime. The tests
 also generate screenshots of all five screens at default and minimum window
 sizes, plus the reservation dialog, in `target/ui-review/`.
-
-## Current scope
-
-This is a UI migration of the existing prototype. Data is stored in memory and
-resets when the application restarts. Booking still checks the room's current
-status, and date entries remain text fields, as in the original implementation.
-The documentation's additional features (such as accounts, reservation editing,
-stay extensions, damage fines, date-based availability, and persistence) have
-not been added.
